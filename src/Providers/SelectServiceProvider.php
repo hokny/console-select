@@ -31,11 +31,11 @@ class SelectServiceProvider extends ServiceProvider
          */
         Command::macro(
             'select',
-            function (string $message = '', array $options = [], bool $allowMultiple = true) {
+            function (string $message = '', array $options = [], bool $allowMultiple = true, $required = false) {
                 $helper = new SelectionHelper($this->input, $this->output);
                 $question = $allowMultiple ? new CheckboxInput($message, $options) : new RadioInput($message, $options);
 
-                return $helper->select($question);
+                return $helper->select($question, $required);
             }
         );
     }

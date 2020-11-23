@@ -80,11 +80,24 @@ class SelectionHelper implements HelperInterface
      * @param SelectInput $question
      * @return array
      */
-    public function select(SelectInput $question)
+    public function select(SelectInput $question, bool $required = false)
     {
         $select = new SelectHandler($question, $this->output, $this->getInputStream());
 
-        $responses = $select->handle();
+        if($required) {
+            while($required) {
+                $responses = $select->handle();
+                if(!empty($responses)) {
+                    $required = false;
+                }
+                else {
+                    $this->output->writeln('<error>Required!</error>');
+                }
+            }
+        }
+        else {
+            $responses = $select->handle();
+        }
         // TODO: validate responses  ???
 
         return $responses;
